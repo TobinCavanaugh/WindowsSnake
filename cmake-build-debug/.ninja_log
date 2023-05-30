@@ -1,0 +1,10 @@
+# ninja log v5
+3	915	7071812134584215	CMakeFiles/BasicSnake.dir/main.c.obj	467d530de2f06563
+916	1058	7071812135985436	BasicSnake.exe	82d36521f324d30a
+3	886	7071673974218510	CMakeFiles/BasicSnake.dir/PCG_Input.c.obj	237b6d7348bab636
+4	848	7071671200674069	CMakeFiles/BasicSnake.dir/WindowRenderer.c.obj	805f20544f112f08
+2	171	7071673929440973	build.ninja	efb81c2aa0eade4d
+3	978	7071812754574465	CMakeFiles/BasicSnake.dir/main.c.obj	467d530de2f06563
+979	1118	7071812755935666	BasicSnake.exe	82d36521f324d30a
+3	909	7071813801830368	CMakeFiles/BasicSnake.dir/main.c.obj	467d530de2f06563
+910	1041	7071813803121500	BasicSnake.exe	82d36521f324d30a

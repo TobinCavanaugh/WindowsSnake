@@ -1,0 +1,3 @@
+C:/Users/tobin/CLionProjects/BasicSnake/cmake-build-debug/CMakeFiles/BasicSnake.dir
+C:/Users/tobin/CLionProjects/BasicSnake/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/tobin/CLionProjects/BasicSnake/cmake-build-debug/CMakeFiles/rebuild_cache.dir
