@@ -110,31 +110,71 @@ void SetDirLeft() {
     }
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    //A 0x41
-    //S 0x53
-    //D 0x44
-    //W 0x57
 
+void Quit() {
+    exit(0);
+}
+
+/// Shows the death message
+/// \param message
+void ShowDeathMessage(char *message) {
+
+    //TODO WARNING, this + 4 is for the length of the number, i guesstimate that you likely wont get a score thats greater than 9999, but this may vary based on your game lol
+
+    //Yay c string manipulation
+    char *formattedText = (char *) malloc(strlen(message) + 4 + 1);
+    sprintf(formattedText, message, snakeLength);
+
+    int choice = MessageBox(NULL, formattedText, "Windows Snake", MB_OKCANCEL | MB_ICONQUESTION);
+    free(formattedText);
+
+    // Process the user's choice
+    switch (choice) {
+
+        //Replay if the ok button is pressed
+        case IDOK : {
+            //Restart the exe
+            char executablePath[MAX_PATH];
+            GetModuleFileName(NULL, executablePath, MAX_PATH);
+            ShellExecute(NULL, "open", executablePath, NULL, NULL, SW_SHOWDEFAULT);
+            exit(0);
+            break;
+        }
+        case IDCANCEL:
+            Quit();
+            break;
+    }
+
+}
+
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+
+    FreeConsole();
     srand((unsigned int) time(NULL));
 
-
+    //Initialize the snake
     InitializeSnake();
 
-    PCG_Point applePos = {rand() % COLUMN_COUNT, rand() % ROW_COUNT};
-
-    int alive = 1;
-
+    //Initialize the window renderer
     WT_InitWindowRenderer(hInstance, ROW_COUNT, COLUMN_COUNT);
 
+    //Input related
     PCG_InitInput();
 
+    //Register the input keys
     PCG_RegisterKeyEvent(KEY_W, &SetDirUp, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_A, &SetDirLeft, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_S, &SetDirDown, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_D, &SetDirRight, KE_Down, NULL);
+    PCG_RegisterKeyEvent(KEY_Q, &Quit, KE_Down, NULL);
+    PCG_RegisterKeyEvent(KEY_ESCAPE, &Quit, KE_Down, NULL);
+
+    //Place the apple
+    PCG_Point applePos = {rand() % COLUMN_COUNT, rand() % ROW_COUNT};
 
     float deltaTime = 1;
+    int alive = 1;
 
     MSG msg;
     while (alive) {
@@ -151,7 +191,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             usleep(500);
         }
 
-        // Window message loop
+        //Window message loop
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 
             if (msg.message == WM_QUIT) {
@@ -178,7 +218,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // Check for collisions
         if (snakePoints[0].x < 0 || snakePoints[0].x >= COLUMN_COUNT ||
             snakePoints[0].y < 0 || snakePoints[0].y >= ROW_COUNT) {
-            printf("You hit a wall! Your max length was %d\n", snakeLength);
+            ShowDeathMessage("You hit a wall! Your max length was %d. Play again?");
             alive = 0;
         }
 
@@ -218,11 +258,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
         }
 
+        //If we arent moving, then the game hasnt started and we dont want to kill the players
         if (!PointEquals(direction, PCG_PointZero)) {
             // Check if the head collides with the tail
             for (int s = 1; s < snakeLength; s++) {
                 if (PointEquals(snakePoints[0], snakePoints[s])) {
-                    printf("You hit your own tail! Your max length was %d\n", snakeLength);
+                    ShowDeathMessage("You hit your own tail! Your max length was %d. Play again?");
+
                     alive = 0;
                     break; // Exit the loop early since collision is detected
                 }
