@@ -125,19 +125,15 @@ void WT_InitWindowRenderer(HINSTANCE hInst, int rrowCount, int ccolCount) {
     // Store the instance handle in the global variable
     hInstance = hInst;
 
-
+    //Make background window
     InternalMakeBackground(adjustedXOffset, adjustedYOffset);
 
-
-
-    //blockWindowClass.hbrBackground = GetSysColorBrush(COLOR_SCROLLBAR);
-
-    // Register the window class
+    //Register the window class
     WNDCLASS blockWindowClass = {0};
     blockWindowClass.lpfnWndProc = WindowProc;
     blockWindowClass.hInstance = hInstance;
     blockWindowClass.lpszClassName = "Block";
-    //blockWindowClass.hbrBackground = GetSysColorBrush(COLOR_SCROLLBAR);
+
     RegisterClass(&blockWindowClass);
 
     winGrid = malloc(colCount * sizeof(HWND *));

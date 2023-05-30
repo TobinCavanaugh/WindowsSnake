@@ -7,16 +7,11 @@
 #include "WindowRenderer.h"
 #include "PCG_Input.h"
 
-#define ROW_COUNT 10
-#define COLUMN_COUNT 10
+#define ROW_COUNT 11
+#define COLUMN_COUNT 11
 #define STARTING_SNAKE_LENGTH 3
 
-#define BORDER_VERTICAL 124 // |
-#define BORDER_HORIZONTAL 196 // ─
-
 char grid[ROW_COUNT][COLUMN_COUNT] = {0};
-
-uint32_t frameCounter = 0;
 
 PCG_Point *snakePoints;
 int snakeLength = STARTING_SNAKE_LENGTH;
@@ -42,7 +37,7 @@ void InitializeSnake() {
     snakePoints[0] = (PCG_Point) {COLUMN_COUNT / 2, ROW_COUNT / 2};
 
     for (int i = 1; i < snakeLength; i++) {
-        snakePoints[i] = (PCG_Point) {(int) snakePoints[i - 1].x - i, (int) snakePoints[i - 1].y};
+        snakePoints[i] = (PCG_Point) {(int) snakePoints[i - 1].x, (int) snakePoints[i - 1].y};
     }
 }
 
@@ -150,7 +145,9 @@ void ShowDeathMessage(char *message) {
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
+    //Hide the console window
     FreeConsole();
+
     srand((unsigned int) time(NULL));
 
     //Initialize the snake
@@ -186,9 +183,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         var endTime = (float) clock() / CLOCKS_PER_SEC;
         deltaTime = endTime - startTime;
 
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 1000; i++) {
             PCG_InputFrameStart();
-            usleep(500);
+            usleep(400);
         }
 
         //Window message loop
@@ -254,19 +251,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
                 if (counter == 0) {
                     placed = 1;
-                }
-            }
-        }
-
-        //If we arent moving, then the game hasnt started and we dont want to kill the players
-        if (!PointEquals(direction, PCG_PointZero)) {
-            // Check if the head collides with the tail
-            for (int s = 1; s < snakeLength; s++) {
-                if (PointEquals(snakePoints[0], snakePoints[s])) {
-                    ShowDeathMessage("You hit your own tail! Your max length was %d. Play again?");
-
-                    alive = 0;
-                    break; // Exit the loop early since collision is detected
                 }
             }
         }
