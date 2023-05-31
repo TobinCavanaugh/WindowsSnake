@@ -1,4 +1,7 @@
-# Windows Snake
+# Windows <img src="https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/35cf4b2a-8913-4c85-8df8-59b42c4733ea" width="30" />nake
+
+
+
 Snake but each pixel is it's own Windows window, shockingly NOT crossplatform
 Windows only!
 
