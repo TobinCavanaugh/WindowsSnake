@@ -17,10 +17,10 @@ This is a basic C implementation of the 1997 hit game snake. The twist is that i
 - I wanted to make a stupid but still functional application using my new knowledge of C. I also wanted to learn more about the C Windows API, and I settled on making a game constructed out of windows. My first thought was tetris, however after I solved the problem of displaying and coloring windows, I realized Tetris is hard to program, and that snake would get the same point across while being much easier to program.
 
 ## Screenshots
-- Some action packed scenes:  
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/dde50d69-822a-480f-85bd-636503205262)
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/c879decc-577a-45f9-8ec1-ee23ca8649da)  
 - Windows Snake on the desktop:  
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/0cabc2ad-ce70-4f48-91f1-228e012ba1f5)  
+![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/603016f6-852f-42a2-a8c3-f49739a5a560)  
+- Some action packed scenes:  
+![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/217d3217-5f75-4ab7-9090-fd8e9d440bec)
+![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/d54950b7-2029-4353-9ac4-ea87454d3974)  
 - The thumbnail previews displaying that the active 'pixels' are individual windows:  
 ![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/d4e71607-3659-43bf-84c3-96dc23cdc331)
