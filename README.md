@@ -1,4 +1,4 @@
-# Windows <img src="https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/35cf4b2a-8913-4c85-8df8-59b42c4733ea" width="30" />nake
+# Windows <img src="https://raw.githubusercontent.com/TobinCavanaugh/WindowsSnake/master/newico.png" width="30" />nake
 
 
 
@@ -21,9 +21,9 @@ This is a basic C implementation of the 1997 hit game snake. The twist is that i
 
 ## Screenshots
 - Windows Snake on the desktop:  
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/603016f6-852f-42a2-a8c3-f49739a5a560)  
+![image](https://github.com/TobinCavanaugh/WindowsSnake/raw/master/desktop.png)  
 - Some action packed scenes:  
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/217d3217-5f75-4ab7-9090-fd8e9d440bec)
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/d54950b7-2029-4353-9ac4-ea87454d3974)  
+![image](https://raw.githubusercontent.com/TobinCavanaugh/WindowsSnake/master/tabgimage.png)
+![image](https://raw.githubusercontent.com/TobinCavanaugh/WindowsSnake/master/codeimage.png)  
 - The thumbnail previews displaying that the active 'pixels' are individual windows:  
-![image](https://github.com/TobinCavanaugh/WindowsSnake/assets/71297845/d4e71607-3659-43bf-84c3-96dc23cdc331)
+![image](https://raw.githubusercontent.com/TobinCavanaugh/WindowsSnake/master/thumbnails.png)
