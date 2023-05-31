@@ -2,7 +2,7 @@
 
 
 
-Snake but each pixel is it's own Windows window, shockingly NOT crossplatform
+Snake but each pixel is its own Windows window, shockingly NOT crossplatform
 Windows only!
 
 This is a basic C implementation of the 1997 hit game snake. The twist is that its for Windows, meaning in this case that each pixel of the game is its own window
