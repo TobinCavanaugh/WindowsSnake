@@ -77,34 +77,6 @@ void RenderWindows(PCG_Point applePos) {
 int inputChangedThisFrame = 0;
 PCG_Point direction;
 
-void SetDirUp() {
-    if (!DirectionIsOpp(direction, PCG_PointDown) && !inputChangedThisFrame) {
-        direction = PCG_PointDown;
-        inputChangedThisFrame = 1;
-    }
-}
-
-void SetDirDown() {
-    if (!DirectionIsOpp(direction, PCG_PointUp) && !inputChangedThisFrame) {
-        direction = PCG_PointUp;
-        inputChangedThisFrame = 1;
-    }
-}
-
-void SetDirRight() {
-    if (!DirectionIsOpp(direction, PCG_PointRight) && !inputChangedThisFrame) {
-        direction = PCG_PointRight;
-        inputChangedThisFrame = 1;
-    }
-}
-
-void SetDirLeft() {
-    if (!DirectionIsOpp(direction, PCG_PointLeft) && !inputChangedThisFrame) {
-        direction = PCG_PointLeft;
-        inputChangedThisFrame = 1;
-    }
-}
-
 
 void Quit() {
     exit(0);
@@ -139,9 +111,35 @@ void ShowDeathMessage(char *message) {
             Quit();
             break;
     }
-
 }
 
+void SetDirUp() {
+    if (!DirectionIsOpp(direction, PCG_PointDown) && !inputChangedThisFrame) {
+        direction = PCG_PointDown;
+        inputChangedThisFrame = 1;
+    }
+}
+
+void SetDirDown() {
+    if (!DirectionIsOpp(direction, PCG_PointUp) && !inputChangedThisFrame) {
+        direction = PCG_PointUp;
+        inputChangedThisFrame = 1;
+    }
+}
+
+void SetDirRight() {
+    if (!DirectionIsOpp(direction, PCG_PointRight) && !inputChangedThisFrame) {
+        direction = PCG_PointRight;
+        inputChangedThisFrame = 1;
+    }
+}
+
+void SetDirLeft() {
+    if (!DirectionIsOpp(direction, PCG_PointLeft) && !inputChangedThisFrame) {
+        direction = PCG_PointLeft;
+        inputChangedThisFrame = 1;
+    }
+}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
@@ -150,7 +148,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     srand((unsigned int) time(NULL));
 
-    //Initialize the snake
+    //Initialize the snakedwawdsawdwasdwasasaa
     InitializeSnake();
 
     //Initialize the window renderer
@@ -164,6 +162,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     PCG_RegisterKeyEvent(KEY_A, &SetDirLeft, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_S, &SetDirDown, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_D, &SetDirRight, KE_Down, NULL);
+
+    PCG_RegisterKeyEvent(KEY_UP, &SetDirUp, KE_Down, NULL);
+    PCG_RegisterKeyEvent(KEY_LEFT, &SetDirLeft, KE_Down, NULL);
+    PCG_RegisterKeyEvent(KEY_DOWN, &SetDirDown, KE_Down, NULL);
+    PCG_RegisterKeyEvent(KEY_RIGHT, &SetDirRight, KE_Down, NULL);
+
     PCG_RegisterKeyEvent(KEY_Q, &Quit, KE_Down, NULL);
     PCG_RegisterKeyEvent(KEY_ESCAPE, &Quit, KE_Down, NULL);
 
@@ -183,6 +187,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         var endTime = (float) clock() / CLOCKS_PER_SEC;
         deltaTime = endTime - startTime;
 
+        //Get the input, we do this numerous times, which wouldnt work in a lot of scenarios but it works here sooo
+        //Tweak these values to change the framerate
         for (int i = 0; i < 1000; i++) {
             PCG_InputFrameStart();
             usleep(400);
@@ -202,21 +208,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
 
-        // Move the tail
+        //Move the tail
         for (int i = snakeLength - 1; i > 0; i--) {
             snakePoints[i] = (PCG_Point) {(int) roundf(snakePoints[i - 1].x), (int) roundf(snakePoints[i - 1].y)};
         }
 
 
-        // Update the head position
+        //Update the head position
         snakePoints[0] = (PCG_Point) {snakePoints[0].x + direction.x,
                                       snakePoints[0].y + direction.y};
 
-        // Check for collisions
+        //Check for collisions
         if (snakePoints[0].x < 0 || snakePoints[0].x >= COLUMN_COUNT ||
             snakePoints[0].y < 0 || snakePoints[0].y >= ROW_COUNT) {
-            ShowDeathMessage("You hit a wall! Your max length was %d. Play again?");
+            ShowDeathMessage("You hit a wall! Your max length was %d. Try again?");
             alive = 0;
+        }
+
+        //If not moving
+        if(!PointEquals(direction, PCG_PointZero)){
+            for(int s = 1; s < snakeLength; s++){
+                if(PointEquals(snakePoints[0], snakePoints[s]))
+                {
+                    ShowDeathMessage("You hit your own tail! Your max length was %d. Try again?");
+                    alive = 0;
+                }
+            }
         }
 
         //Picked up apple
@@ -230,12 +247,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             snakePoints[snakeLength - 1] = (PCG_Point) {-1, -1};
 
             //Win condition I guess
-            if (snakeLength == ROW_COUNT * COLUMN_COUNT) {
-                printf("You win!!!");
+            if (snakeLength == ROW_COUNT * COLUMN_COUNT - 1) {
+                //printf("You win!!!");
+                RenderWindows(applePos);
+                ShowDeathMessage("You win!!! Your final tail length was %d!! Play again?");
                 alive = 0;
             }
 
             //We do our best to find a new spot, worst case scenario this is slow but EHHHHHHHHHhhhhhhhhh
+            //TODO this no even workie
             int placed = 0;
             while (placed == 0) {
                 applePos.y = rand() % ROW_COUNT;
@@ -243,9 +263,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
                 //This is just checking if the apple is anywhere on the snake, if so we try again
                 int counter = 0;
-                for (int s = 0; s < snakeLength - 1; s++) {
+                for (int s = 0; s < snakeLength; s++) {
                     if (PointEquals(snakePoints[0], applePos)) {
                         counter++;
+                        break;
                     }
                 }
 

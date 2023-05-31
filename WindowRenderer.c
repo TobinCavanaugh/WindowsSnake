@@ -10,9 +10,7 @@
 
 #define COLOR_ATTRIBUTE_INDEX GWLP_USERDATA
 
-
 HINSTANCE hInstance;
-
 
 HWND CreateCustomWindow(char *name, int xpos, int ypos, int xScale, int yScale, const char *className, int style) {
 
@@ -38,6 +36,7 @@ HWND CreateCustomWindow(char *name, int xpos, int ypos, int xScale, int yScale, 
     return hwnd;
 }
 
+HWND background;
 HWND **winGrid;
 int colCount;
 int rowCount;
@@ -64,12 +63,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             return 0;
         }
 
-            //We do this to unhide the windows when they get clicked on
+        //We do this to unhide the windows when they get clicked on
         case WM_LBUTTONDOWN: {
-            // Left mouse button clicked
-            int xPos = LOWORD(lParam);
-            int yPos = HIWORD(lParam);
-
+            SetForegroundWindow(background);
             for (int x = 0; x < colCount; x++) {
                 for (int y = 0; y < rowCount; y++) {
                     SetForegroundWindow(winGrid[x][y]);
@@ -84,7 +80,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 }
 
 
-void InternalMakeBackground(int adjustedXOffset, int adjustedYOffset) {
+HWND InternalMakeBackground(int adjustedXOffset, int adjustedYOffset) {
 
     int xBorderWidth = (WS_WIDTH * colCount) + (colCount * WS_PADDING);
     int yBorderWidth = (WS_HEIGHT * rowCount) + (rowCount * WS_PADDING);
@@ -99,13 +95,21 @@ void InternalMakeBackground(int adjustedXOffset, int adjustedYOffset) {
     borderWindowClass.hbrBackground = GetSysColorBrush(COLOR_DESKTOP);
     RegisterClass(&borderWindowClass);
 
-    HWND border = CreateCustomWindow("Windows Tetris", borderX, borderY, xBorderWidth + (2 * WS_PADDING),
-                                     yBorderWidth + (2 * WS_PADDING), borderWindowClass.lpszClassName,
-                                     WS_POPUPWINDOW);
+    //Old opaque version
+//    HWND border = CreateCustomWindow("Windows Tetris", borderX, borderY, xBorderWidth + (2 * WS_PADDING),
+//                                     yBorderWidth + (2 * WS_PADDING), borderWindowClass.lpszClassName,
+//                                     WS_POPUP);
+
+    //Fully transparent version
+    HWND border = CreateWindowEx(WS_EX_LAYERED | WS_EX_TRANSPARENT, borderWindowClass.lpszClassName, "Windows Tetris",
+                                 WS_POPUPWINDOW, borderX, borderY, xBorderWidth + (2 * WS_PADDING),
+                                 yBorderWidth + (2 * WS_PADDING), NULL, NULL, hInstance, NULL);
+
+
+    SetLayeredWindowAttributes(border, RGB(255, 0, 255), 80, LWA_ALPHA);
 
     ShowWindow(border, SW_SHOW);
     UpdateWindow(border);
-
 }
 
 
@@ -126,7 +130,7 @@ void WT_InitWindowRenderer(HINSTANCE hInst, int rrowCount, int ccolCount) {
     hInstance = hInst;
 
     //Make background window
-    InternalMakeBackground(adjustedXOffset, adjustedYOffset);
+    background = InternalMakeBackground(adjustedXOffset, adjustedYOffset);
 
     //Register the window class
     WNDCLASS blockWindowClass = {0};
@@ -154,7 +158,6 @@ void WT_InitWindowRenderer(HINSTANCE hInst, int rrowCount, int ccolCount) {
             UpdateWindow(hwnd);
         }
     }
-
 }
 
 COLORREF occupiedColor = RGB(36, 58, 94); // White color (you can modify this as needed)
@@ -193,7 +196,7 @@ void WT_SetPixel(PCG_Point point, int newState) {
             case 1: {
 
                 var v = (HBRUSH) GetClassLongPtr(current, GCLP_HBRBACKGROUND);
-                if(v != snakeBrush){
+                if (v != snakeBrush) {
                     SetClassLongPtr(current, GCLP_HBRBACKGROUND, (LONG_PTR) snakeBrush);
                 }
 
