@@ -18,6 +18,7 @@ This is a basic C implementation of the 1997 hit game snake. The twist is that i
 
 ## Motivation
 - I wanted to make a stupid but still functional application using my new knowledge of C. I also wanted to learn more about the C Windows API, and I settled on making a game constructed out of windows. My first thought was tetris, however after I solved the problem of displaying and coloring windows, I realized Tetris is hard to program, and that snake would get the same point across while being much easier to program.
+- I also got to use some code from my as of yet unseen C game engine, I used its input system in this project
 
 ## Screenshots
 - Windows Snake on the desktop:  
