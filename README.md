@@ -9,7 +9,6 @@ This is a basic C implementation of the 1997 hit game snake. The twist is that i
 
 ## How to play
 - Download BasicSnake.exe from the releases tab and run it!
-- If I were you, I'd also perform a web virus scan on the program.
 
 ## Controls
 - Arrow keys or WASD for directions.
